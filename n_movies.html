@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies - Netflix Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: white;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            color: #e50914;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 80px 20px;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .movie-card {
+            width: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #222;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.1);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .rating {
+            color: #f5c518;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>Netflix</h1>
+    </div>
+
+    <div class="container">
+        <h2 style="margin-bottom: 20px;">🔥 인기 영화</h2>
+        <div class="movie-list" id="movies"></div>
+    </div>
+
+    <script>
+        async function fetchMovies() {
+            try {
+                // fetch 요청을 서버의 3000번 포트로 변경
+                const response = await fetch('http://localhost:3000/movies');
+                const movies = await response.json();
+
+                const moviesContainer = document.getElementById('movies');
+                moviesContainer.innerHTML = ''; // 초기화
+
+                movies.forEach(movie => {
+                    const movieCard = document.createElement('div');
+                    movieCard.classList.add('movie-card');
+
+                    movieCard.innerHTML = `
+                        <img src="https://image.tmdb.org/t/p/w500${movie.Poster_Path}" alt="${movie.Title}">
+                        <div class="movie-info">
+                            <div class="movie-title">${movie.Title}</div>
+                            <div class="rating">⭐ ${movie.Vote_Average.toFixed(1)}</div>
+                        </div>
+                    `;
+
+                    moviesContainer.appendChild(movieCard);
+                });
+            } catch (error) {
+                console.error('영화 데이터를 불러오는 중 오류 발생:', error);
+            }
+        }
+
+        fetchMovies(); // 영화 데이터 가져오기
+    </script>
+
+</body>
+</html>
