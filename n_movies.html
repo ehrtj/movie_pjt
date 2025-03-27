@@ -93,7 +93,6 @@
     <script>
         async function fetchMovies() {
             try {
-                // fetch 요청을 서버의 3000번 포트로 변경
                 const response = await fetch('http://localhost:3000/movies');
                 const movies = await response.json();
 
@@ -105,11 +104,13 @@
                     movieCard.classList.add('movie-card');
 
                     movieCard.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w500${movie.Poster_Path}" alt="${movie.Title}">
-                        <div class="movie-info">
-                            <div class="movie-title">${movie.Title}</div>
-                            <div class="rating">⭐ ${movie.Vote_Average.toFixed(1)}</div>
-                        </div>
+                        <a href="movie-detail.html?id=${movie.id}">
+                            <img src="https://image.tmdb.org/t/p/w500${movie.Poster_Path}" alt="${movie.Title}">
+                            <div class="movie-info">
+                                <div class="movie-title">${movie.Title}</div>
+                                <div class="rating">⭐ ${movie.Vote_Average.toFixed(1)}</div>
+                            </div>
+                        </a>
                     `;
 
                     moviesContainer.appendChild(movieCard);

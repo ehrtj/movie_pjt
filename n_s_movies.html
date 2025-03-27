@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Detail</title>
+    <style>
+        body {
+            background-color: #141414;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            color: #e50914;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .movie-detail img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .movie-title {
+            font-size: 36px;
+            margin-top: 20px;
+        }
+
+        .rating {
+            color: #f5c518;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .description {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>Netflix</h1>
+    </div>
+
+    <div class="container">
+        <div class="movie-detail" id="movie-detail"></div>
+    </div>
+
+    <script>
+        async function fetchMovieDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('id');  // URL에서 영화 ID를 가져옴
+
+            try {
+                const response = await fetch(`http://localhost:3000/movies/${movieId}`);
+                const movie = await response.json();
+
+                const movieDetailContainer = document.getElementById('movie-detail');
+                movieDetailContainer.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w500${movie.Poster_Path}" alt="${movie.Title}">
+                    <div class="movie-title">${movie.Title}</div>
+                    <div class="rating">⭐ ${movie.Vote_Average.toFixed(1)}</div>
+                    <div class="description">${movie.Description}</div>
+                `;
+            } catch (error) {
+                console.error('영화 상세 데이터를 불러오는 중 오류 발생:', error);
+            }
+        }
+
+        fetchMovieDetail(); // 영화 상세 정보 가져오기
+    </script>
+
+</body>
+</html>

@@ -73,3 +73,5 @@ db.run(createTableQuery, (err) => {
         }
     });
 });
+
+
